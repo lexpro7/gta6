@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+// Exercise the real simulation without a browser or third-party dependencies.
+const noop=()=>{};
+const context=new Proxy({createLinearGradient:()=>({addColorStop:noop}),createRadialGradient:()=>({addColorStop:noop})},{get:(o,k)=>k in o?o[k]:noop,set:(o,k,v)=>(o[k]=v,true)});
+const nodes=new Map();
+globalThis.document={getElementById(id){if(!nodes.has(id))nodes.set(id,{style:{},hidden:true,textContent:'',setAttribute:noop,addEventListener:noop,getContext:()=>context});return nodes.get(id);},createElement:()=>({getContext:()=>context}),addEventListener:noop};
+globalThis.window={innerWidth:1280,innerHeight:720,devicePixelRatio:1,addEventListener:noop};
+globalThis.requestAnimationFrame=()=>1;globalThis.cancelAnimationFrame=noop;
+const {Game}=await import('../js/game.js');
+const {blocked,moveBody,lineClear}=await import('../js/world.js');
+const {render}=await import('../js/render.js');
+const game=new Game(noop);await game.prepare();
+const step=(seconds)=>{for(let i=0;i<seconds*60;i++)game.update(1/60);};
+test('world contains detailed blocks and all mission destinations are accessible',()=>{assert.ok(game.world.buildings.length>80);assert.ok(game.world.palms.length>100);for(let stage=0;stage<4;stage++){game.stage=stage;const t=game.target();assert.equal(blocked(game.world,t.x,t.y,10),false);}assert.equal(blocked(game.world,2605,2605,10),false);game.reset();});
+test('walking, sprinting and walls',()=>{game.reset();const y=game.player.y;game.keys.add('KeyW');step(.3);assert.ok(game.player.y<y-30);game.keys.add('ShiftLeft');const y2=game.player.y;step(.3);assert.ok(y2-game.player.y>55);game.keys.clear();const b=game.world.buildings[0],body={x:b.x-30,y:b.y+50};moveBody(game.world,body,150,0,10);assert.ok(body.x<=b.x-10);assert.equal(lineClear(game.world,{x:b.x-30,y:b.y+50},{x:b.x+b.w+30,y:b.y+50}),false);});
+test('enter, accelerate, brake and safely exit',()=>{game.reset();game.interact();assert.equal(game.player.car.type,'sport');game.keys.add('KeyW');step(1);assert.ok(game.player.car.speed>100);assert.ok(game.player.y<1850);game.keys.clear();game.player.car.speed=0;game.interact();assert.equal(game.player.car,null);assert.equal(blocked(game.world,game.player.x,game.player.y,10),false);});
+test('shots consume ammunition, trigger wanted and reload from reserve',()=>{game.reset();game.shoot();assert.equal(game.magazines[0],11);assert.equal(game.bullets.length,1);assert.ok(game.heat>0);game.startReload();step(1.3);assert.equal(game.magazines[0],12);assert.equal(game.reserve[0],119);game.weapon=1;game.shoot();assert.equal(game.magazines[1],29);});
+test('bullets collide with buildings',()=>{game.reset();const b=game.world.buildings[0];game.bullets=[{x:b.x-10,y:b.y+50,vx:850,vy:0,life:1}];step(.1);assert.equal(game.bullets.length,0);assert.ok(game.particles.length>0);});
+test('all three missions progress and award the expected money',()=>{game.reset();game.interact();game.cars=[game.player.car];game.npcs=[];let t=game.target();Object.assign(game.player.car,t);game.update(1/60);assert.equal(game.stage,1);game.player.car=null;Object.assign(game.player,game.target());game.update(1/60);assert.equal(game.stage,2);Object.assign(game.player,game.target());game.update(1/60);assert.equal(game.stage,3);assert.ok(game.heat>=2);game.heat=0;Object.assign(game.player,game.target());game.update(1/60);assert.equal(game.stage,4);assert.equal(game.player.money,3250);});
+test('wanted decreases while hidden, police move during pursuit',()=>{game.reset();game.crime(2);const cop=game.cars.find(c=>c.type==='police');const old={x:cop.x,y:cop.y};step(1);assert.ok(Math.hypot(cop.x-old.x,cop.y-old.y)>10);game.cars=[];game.npcs=[];step(25);assert.equal(game.heat,0);});
+test('clinic replenishes supplies and restart resets bounded entity pools',()=>{game.reset();Object.assign(game.player,{x:2605,y:2605,health:20});game.reserve=[0,0];game.update(.01);assert.equal(game.player.health,100);assert.deepEqual(game.reserve,[120,180]);for(let i=0;i<3;i++)game.reset();assert.equal(game.npcs.length,100);assert.equal(game.cars.length,51);assert.equal(game.stage,0);assert.equal(game.player.money,250);});
+test('pause freezes loop updates and stop cancels running state',()=>{game.reset();game.start();game.pause(true);const time=game.time;game.loop(performance.now()+100);assert.equal(game.time,time);game.pause(false);assert.equal(game.paused,false);game.stop();assert.equal(game.running,false);});
+test('renderer supports foot and vehicle states at desktop and small sizes',()=>{game.reset();render(game);game.interact();render(game);window.innerWidth=390;window.innerHeight=844;game.resize();render(game);assert.equal(game.canvas.width,390);});
+test('zero health opens game over and restart restores the resume action',()=>{game.reset();game.start();game.player.health=0;game.update(.01);assert.equal(game.paused,true);assert.equal(document.getElementById('resume').disabled,true);game.reset();assert.equal(document.getElementById('resume').disabled,false);game.stop();});

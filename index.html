@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#100d1c">
+    <meta name="description"
+        content="A GTA VI fan tribute. Explore Leonida and play a free, original top-down city sandbox.">
+    <title>GTA VI — Welcome to Leonida · Fan Experience</title>
+    <link rel="icon" href="logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main id="website">
+        <header id="nav"><a href="#home" class="brand" aria-label="Home"><img src="logo.png" alt="VI"></a>
+            <nav aria-label="Main navigation"><a href="#home">HOME</a><a href="#about">ABOUT</a><a
+                    href="#characters">CHARACTERS</a><a href="#gallery">GALLERY</a></nav><button class="nav-play"
+                data-play>PLAY THE EXPERIENCE <span>↗</span></button>
+        </header>
+        <section class="hero" id="home">
+            <div class="hero-art"></div>
+            <div class="hero-content">
+                <p class="eyebrow">A GRAND THEFT AUTO FAN EXPERIENCE</p><img class="hero-logo" src="label.png"
+                    alt="Grand Theft Auto VI">
+                <h1>WELCOME TO<br><em>LEONIDA.</em></h1>
+                <p>Sun-soaked streets. Neon-lit nights.<br>A little paradise. A lot of trouble.</p><button
+                    class="button" data-play>▶ &nbsp; ENTER VICE CITY <span>↗</span></button><span class="platform">FREE
+                    BROWSER GAME &nbsp; / &nbsp; NO DOWNLOAD</span>
+            </div>
+            <div class="hero-bottom"><a href="#about">↓ &nbsp; SCROLL TO EXPLORE</a><span>25.7617° N &nbsp; 80.1918°
+                    W</span><span class="edition">THE SUNSHINE STATE</span></div>
+        </section>
+        <div class="ticker" aria-hidden="true">VICE CITY <b>✦</b> WHERE THE NIGHTS NEVER END <b>✦</b> WELCOME TO LEONIDA
+            <b>✦</b> VICE CITY <b>✦</b></div>
+        <section id="about" class="about section reveal">
+            <div>
+                <p class="eyebrow">01 / THE WORLD</p>
+                <h2>PARADISE.<br>WITH A <em>PRICE.</em></h2>
+                <p class="copy">Beyond the postcard beaches, another city comes alive. Palm-lined boulevards, midnight
+                    clubs and streets where every turn tells a story.</p>
+                <p class="copy">This independent fan tribute brings that spirit to a playable 2D sandbox. Take a ride
+                    along Ocean Drive, make a delivery across town, or find out how long you can outrun the law.</p><a
+                    href="#play" class="text-link">YOUR CITY. YOUR RULES. &nbsp; ↗</a>
+            </div>
+            <figure><img src="loadscreen4.jpg" alt="Illustrated Vice City nightlife" loading="lazy">
+                <figcaption>LEONIDA, USA <span>THE OTHER SIDE OF PARADISE</span></figcaption>
+            </figure>
+        </section>
+        <section id="characters" class="section">
+            <div class="section-title reveal">
+                <div>
+                    <p class="eyebrow">02 / PARTNERS IN CRIME</p>
+                    <h2>TWO LIVES.<br><em>ONE WAY OUT.</em></h2>
+                </div>
+                <p class="copy">Big dreams. Bad decisions.<br>Welcome to the other side of the sunshine.</p>
+            </div>
+            <div class="characters">
+                <article class="character reveal"><img src="loadscreen1.jpg" alt="Male character artwork"
+                        loading="lazy">
+                    <div><span>01 / THE OUTLAW</span>
+                        <h3>NO EASY WAY.</h3>
+                        <p>In a city built on second chances, trust is the real currency.</p>
+                    </div>
+                </article>
+                <article class="character reveal"><img src="loadscreen2.jpg" alt="Female character artwork"
+                        loading="lazy">
+                    <div><span>02 / THE REBEL</span>
+                        <h3>NOTHING TO LOSE.</h3>
+                        <p>A new beginning. A familiar kind of trouble.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="gallery" class="section">
+            <div class="section-title reveal">
+                <div>
+                    <p class="eyebrow">03 / POSTCARDS FROM LEONIDA</p>
+                    <h2>LIFE IN <em>FULL COLOR.</em></h2>
+                </div><span class="small-label">SELECT AN IMAGE TO EXPLORE ↗</span>
+            </div>
+            <div class="gallery" id="gallery-grid"></div>
+        </section>
+        <section id="play" class="play-section reveal"><img src="logo.png" alt="VI" class="play-logo">
+            <p class="eyebrow">THE STREETS ARE WAITING</p>
+            <h2>READY TO ENTER<br><em>VICE CITY?</em></h2>
+            <p>Your ride. Your next move. Your story.</p><button class="button huge" data-play>▶ &nbsp; PLAY
+                <span>↗</span></button>
+            <p class="platform">CANVAS 2D SANDBOX · KEYBOARD & MOUSE · BEST ON DESKTOP</p>
+        </section>
+        <footer><img src="rockstar_logo.png" alt="Rockstar artwork">
+            <p>INDEPENDENT FAN PROJECT<br><span>Not affiliated with or endorsed by Rockstar Games. GTA and related marks
+                    belong to their respective owners.</span></p><a href="#home">BACK TO TOP ↑</a>
+        </footer>
+    </main>
+    <dialog id="lightbox"><button id="close-lightbox" aria-label="Close image">✕</button><img
+            alt="Gallery artwork enlarged" id="lightbox-image"></dialog>
+    <section id="loading" class="screen" hidden aria-label="Loading game">
+        <div id="loading-art"></div>
+        <div class="loading-shade"></div><img class="loading-logo" src="label.png" alt="Grand Theft Auto VI">
+        <div class="loading-bottom">
+            <p class="eyebrow" id="load-status">INITIALIZING GAME ENGINE...</p>
+            <div class="loading-row">
+                <h2>LOADING VICE CITY<span id="dots">...</span></h2><strong id="load-percent">0%</strong>
+            </div><progress id="progress" max="100" value="0"></progress>
+            <p id="load-tip">WASD to move. Hold SHIFT to run.</p>
+            <p id="load-error" hidden></p><button id="cancel-loading" class="text-link">BACK TO WEBSITE</button>
+        </div><img class="loading-rockstar" src="rockstar_logo1.png" alt="Rockstar">
+    </section>
+    <section id="game" class="screen" hidden aria-label="Vice City game"><canvas id="game-canvas"
+            aria-label="Top-down open world. WASD to move, E to enter a car, Escape to pause."></canvas>
+        <div class="hud top-left">
+            <p class="eyebrow">LEONIDA / FREE ROAM</p>
+            <h2 id="district">Ocean Beach</h2>
+            <p id="game-clock"></p>
+        </div>
+        <div class="hud top-right">
+            <div id="wanted" aria-label="Wanted level">☆☆☆☆☆</div>
+            <h2 id="money">$000250</h2>
+            <p id="ammo">PISTOL · 12 / 120</p><button id="sound">SOUND OFF</button><button id="pause-button">Ⅱ
+                PAUSE</button>
+        </div>
+        <div class="minimap-wrap"><canvas id="minimap" width="180" height="180" aria-label="City map"></canvas>
+            <div class="health"><span id="health-bar"></span></div><span class="map-label">N ↑ &nbsp; LEONIDA</span>
+        </div>
+        <div class="mission hud">
+            <p class="eyebrow" id="mission-name">01 / FIRST RIDE</p>
+            <p id="mission-text"></p><small id="mission-distance"></small>
+        </div>
+        <div id="interaction"></div>
+        <div id="toast" role="status"></div>
+        <div class="key-hints">WASD <span>MOVE / DRIVE</span> &nbsp; E <span>VEHICLE</span> &nbsp; 1 / 2
+            <span>WEAPON</span> &nbsp; ESC <span>PAUSE</span></div>
+        <div id="pause" hidden>
+            <div class="pause-card">
+                <p class="eyebrow">GRAND THEFT AUTO VI / FAN SANDBOX</p>
+                <h2 id="pause-title">TAKE A<br><em>BREATHER.</em></h2><button class="button" id="resume">RESUME
+                    <span>↗</span></button><button id="restart">RESTART</button><button id="controls-toggle"
+                    aria-expanded="false">CONTROLS</button>
+                <div id="controls" hidden>WASD / arrows — move or steer<br>Shift — sprint · Space — handbrake<br>E —
+                    enter / exit vehicle<br>Mouse — aim · Left click — fire<br>1 / 2 — pistol / rifle · R —
+                    reload<br>Escape — pause<br><br>Follow the pink marker. Escape police by breaking line of sight and
+                    keeping your distance. The clinic restores health and ammunition.</div><button id="exit">EXIT TO
+                    WEBSITE</button>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
